@@ -1,0 +1,19 @@
+body {
+  font-family: sans-serif;
+}
+
+.scifi-button {
+  background: linear-gradient(45deg, #0066cc, #003366);
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 2px solid #66ccff;
+  border-radius: 25px 5px 25px 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 255, 255, 0.7) inset;
+}
+
+.scifi-button:hover {
+  background: linear-gradient(45deg, #003366, #001a33);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.9) inset;
+}
