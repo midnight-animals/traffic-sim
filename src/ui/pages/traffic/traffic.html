@@ -3,3 +3,11 @@ ${message}
 <h3>Mouse coords</h3>
 X:${mouseX}
 Y:${mouseY}
+<!-- Import the value converter -->
+<import from="./ArrayToString"></import>
+
+<div>
+  Path: ${mousePath | arrayToString}
+</div>
+
+<div></div>
