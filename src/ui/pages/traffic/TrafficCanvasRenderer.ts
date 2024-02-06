@@ -1,4 +1,6 @@
 import { Canvas2DShapes } from "../../../library/canvas/Canvas2DShapes";
+import { getCarHeight, getCenterOfCarInLane } from "./carModules/carHelpers";
+import { ICar } from "./carModules/carTypes";
 
 const debug = false;
 const debugFlags = {
@@ -11,23 +13,18 @@ let lastDrawTime = 0; // When the last frame was drawn
 const fps = debug ? 0.00001 : 30;
 const CAR_GAP = 30;
 const CAR_WIDTH = 50;
-const CAR_HEIGHT = 20;
-const CAR_HEIGHT_FACTOR = 0.3;
+
 const roadSetup: RoadSetup = {
   lanes: [
     {
       cars: 1
     },
     {
-      cars: 2
+      cars: 0
     }
   ]
 };
 const numOfLanes = roadSetup.lanes.length;
-
-interface Car extends Partial<DOMRect> {
-  speed?: number;
-}
 
 interface Lane {
   cars?: number;
@@ -103,7 +100,7 @@ export class TrafficCanvasRenderer {
     }
   }
 
-  private drawCar(car: Car) {
+  private drawCar(car: ICar) {
     this.context.beginPath();
     this.canvas2DShapes.rect(car.x, car.y, car.width, car.height); // Draw a simple rectangle as a placeholder for the car
     if (debugFlags.carCoords) {
@@ -113,18 +110,17 @@ export class TrafficCanvasRenderer {
   }
 
   private genrateCarsForLaneArray(laneIndex: number, numOfCars: number) {
-    const carArray: Car[] = [];
+    const carArray: ICar[] = [];
 
     const laneRect = this.getLaneRect(laneIndex);
-    const carHeight = CAR_HEIGHT || laneRect.height * CAR_HEIGHT_FACTOR;
-    const startYOfCar =
-      laneRect.height / 2 - carHeight / 2 + (laneIndex - 1) * laneRect.height;
+    const carHeight = getCarHeight(laneRect);
+    const centerOfCar = getCenterOfCarInLane(laneIndex, laneRect);
 
     for (let index = 0; index < numOfCars; index++) {
       const x = (CAR_WIDTH + CAR_GAP) * index;
-      const car: Car = {
+      const car: ICar = {
         x: x,
-        y: startYOfCar,
+        y: centerOfCar,
         width: CAR_WIDTH,
         height: carHeight,
         speed: 3
@@ -146,7 +142,7 @@ export class TrafficCanvasRenderer {
   }
 
   private generateTrafficCanvas() {
-    const cars: Car[] = [];
+    const cars: ICar[] = [];
     roadSetup.lanes.forEach((lane, laneIndex) => {
       const generated = this.genrateCarsForLaneArray(laneIndex + 1, lane.cars);
       cars.push(...generated);
