@@ -4,7 +4,7 @@ import { RoadSetup } from "../trafficTypes";
 export const roadSetup: RoadSetup = {
   lanes: [
     {
-      cars: 2
+      cars: 3
     },
     {
       cars: 1

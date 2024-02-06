@@ -13,8 +13,6 @@ export class CarBehavior {
   public isChangingLanes: boolean;
   public isParking: boolean;
 
-  constructor(private car: ICar) {}
-
   public setIsAccelerating(is: boolean): void {
     this.isAccelerating = is;
   }

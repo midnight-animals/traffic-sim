@@ -1,8 +1,14 @@
-const debug = true;
+const debug = false;
+import { uniqueId } from "lodash-es";
 import { Canvas2DShapes } from "../../../library/canvas/Canvas2DShapes";
 import { CarBehavior } from "./carModules/CarBehavior";
 import { CarService } from "./carModules/CarService";
-import { CAR_GAP, CAR_WIDTH, getCarHeight } from "./carModules/carHelpers";
+import {
+  CAR_ACCELERATION,
+  CAR_GAP,
+  CAR_WIDTH,
+  getCarHeight
+} from "./carModules/carHelpers";
 import { ICar } from "./carModules/carTypes";
 import {
   numOfLanes,
@@ -100,15 +106,16 @@ export class TrafficCanvasRenderer {
     for (let index = 0; index < numOfCars; index++) {
       const x = (CAR_WIDTH + CAR_GAP) * index;
       const car: ICar = {
+        id: uniqueId(),
         x: x,
         y: centerOfCarInLane,
         width: CAR_WIDTH,
         height: carHeight,
-        speed: 3,
+        speed: CAR_ACCELERATION,
         lane: laneIndex,
         behavior: null
       };
-      car.behavior = new CarBehavior(car);
+      car.behavior = new CarBehavior();
       carArray.push(car);
     }
     return carArray;
@@ -120,6 +127,7 @@ export class TrafficCanvasRenderer {
       const generated = this.genrateCarsForLaneArray(laneIndex, lane.cars);
       cars.push(...generated);
     });
+    /* prettier-ignore */ console.log('>>>> _ >>>> ~ cars:', cars);
     const roadConfig: RoadConfig = {
       lanes: roadSetup.lanes,
       cars

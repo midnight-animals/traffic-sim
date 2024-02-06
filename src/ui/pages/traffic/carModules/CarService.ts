@@ -1,6 +1,6 @@
 import { getCenterOfCarInLane, getLaneRect } from "../roadModules/roadhelpers";
 import { RoadConfig } from "../trafficTypes";
-import { CHANGE_LANE_SPEED } from "./carHelpers";
+import { CHANGE_LANE_SPEED, NEARBY_VALUE } from "./carHelpers";
 import { ICar } from "./carTypes";
 
 export class CarService {
@@ -27,10 +27,26 @@ export class CarService {
     // car.behavior.wantsToChangeLane() && this.changeLane(car, roadConfig);
     car.behavior.wantsToChangeLane();
     const toLane = this.getLaneToChangeTo(car, roadConfig);
-    if (this.canChangeLanes(car, toLane, roadConfig.cars))
+    const canChange = this.canChangeLanes(car, toLane, roadConfig.cars);
+    if (canChange) {
       if (car.behavior.isChangingLanes) {
         this.changeLanes(car, toLane);
       }
+    }
+  }
+
+  getNearbyCars(targetCar: ICar, cars: ICar[]): ICar[] {
+    const nearbyCars = cars.filter((car) => {
+      if (car.id === targetCar.id) return false;
+
+      const nearbyRear = Math.abs(targetCar.x - car.x) <= NEARBY_VALUE;
+      const frontCar = car.x + car.width;
+      const frontTargetCar = targetCar.x + targetCar.width;
+      const nearbyFront = Math.abs(frontTargetCar - frontCar) <= NEARBY_VALUE;
+      const nearby = nearbyRear || nearbyFront;
+      return nearby;
+    });
+    return nearbyCars;
   }
 
   /**
@@ -38,7 +54,22 @@ export class CarService {
    * - check if `to` lane exists
    */
   canChangeLanes(car: ICar, toLane: number, cars: ICar[]): boolean {
-    /* prettier-ignore */ console.log('>>>> _ >>>> ~ cars:', cars);
+    if (car.lane === toLane) return false;
+    if (car.x < 0) return false;
+    car.lane; /*?*/
+    toLane; /*?*/
+    const nearbyCars = this.getNearbyCars(car, cars);
+    if (nearbyCars.length === 0) {
+      return true;
+    }
+
+    const nearbyCarsOnToLane = nearbyCars.filter((car) => car.lane === toLane);
+    if (nearbyCarsOnToLane.length === 0) {
+      return true;
+    }
+    // const mapped = cars.map((car) => ({ ...car, behavior: null }));
+    // /* prettier-ignore */ console.log('>>>> _ >>>> ~ mapped:', mapped);
+
     return false;
   }
 
