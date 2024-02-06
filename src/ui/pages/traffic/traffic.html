@@ -1,15 +1,14 @@
-
-
-<h3>Mouse coords</h3>
-X:${mouseX}
-Y:${mouseY}
 <!-- Import the value converter -->
 <import from="./ArrayToString"></import>
 
-<div>
+
+<canvas ref="canvasRef" style="border: 1px solid black;"></canvas>
+X:${mouseX}
+Y:${mouseY}
+
+<!-- <div style="overflow: scroll; width: 100vw; white-space: nowrap;">
   Path: ${mousePath | arrayToString}
-</div>
+</div> -->
 
 <div></div>
 
-<canvas ref="canvasRef" height="500" width="500"></canvas>

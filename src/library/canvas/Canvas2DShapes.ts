@@ -1,9 +1,11 @@
 import { MouseCoords } from "../../types/mouseTypes";
 
+const defaultColor = "black";
+
 /* prettier-ignore */
 export abstract class ICanvas2DShapes {
   public abstract drawLine(start: MouseCoords, end: MouseCoords, color: string, lineWidth: number): void;
-  public abstract drawRectangle( x: number, y: number, width: number, height: number, color: string): void;
+  public abstract rect( x: number, y: number, width: number, height: number, color: string): void;
   public abstract drawBox( x: number, y: number, width: number, height: number, borderColor: string, borderWidth: number): void;
   public abstract drawCircle( x: number, y: number, radius: number, borderColor: string, borderWidth: number): void;
 }
@@ -14,8 +16,8 @@ export class Canvas2DShapes implements ICanvas2DShapes {
   drawLine(
     start: MouseCoords,
     end: MouseCoords,
-    color: string,
-    lineWidth: number
+    color = defaultColor,
+    lineWidth = 1
   ): void {
     this.context.beginPath();
     const [startX, startY] = start;
@@ -27,15 +29,17 @@ export class Canvas2DShapes implements ICanvas2DShapes {
     this.context.stroke();
   }
 
-  drawRectangle(
+  rect(
     x: number,
     y: number,
     width: number,
     height: number,
-    color: string
+    color: string = defaultColor
   ): void {
+    this.context.save();
     this.context.fillStyle = color;
     this.context.fillRect(x, y, width, height);
+    this.context.restore();
   }
 
   drawBox(

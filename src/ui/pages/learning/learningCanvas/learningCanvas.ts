@@ -16,6 +16,7 @@ function getXYFromEvent(event: MouseEvent, canvas: HTMLCanvasElement) {
 
 export class LearningCanvas {
   private canvasRef: HTMLCanvasElement;
+  private backCanvasRef: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private backBuffer: HTMLCanvasElement;
   private backBufferContext: CanvasRenderingContext2D;
@@ -35,13 +36,17 @@ export class LearningCanvas {
     this.canvasRef.width = 600;
     this.context = this.canvasRef.getContext("2d");
     // Back Canvas
-    this.backBuffer = document.createElement("canvas");
+    // this.backBuffer = document.createElement("canvas");
+    this.backBuffer = this.backCanvasRef;
     this.backBuffer.width = this.canvasRef.width;
     this.backBuffer.height = this.canvasRef.height;
     this.backBufferContext = this.backBuffer.getContext("2d");
     // Canvas Setup
     this.canvas2DShapes = new Canvas2DShapes(this.context);
-    this.saveCanvas();
+    // this.saveCanvas();
+    // this.canvas2DShapes.drawLine([0, 0], [600, 600]);
+    // const bufferShapes = new Canvas2DShapes(this.backBufferContext);
+    // bufferShapes.drawRectangle(200, 200, 20, 50);
     // Init Methods
     this.addClickListener();
     this.addMoveListener();
@@ -96,7 +101,7 @@ export class LearningCanvas {
 
       switch (this.selectedShape) {
         case "rectangle":
-          this.canvas2DShapes.drawRectangle(x, y, 50, 50, defaultColor);
+          this.canvas2DShapes.rect(x, y, 50, 50, defaultColor);
           break;
         case "box":
           this.canvas2DShapes.drawBox(x, y, 50, 50, defaultColor, 1);

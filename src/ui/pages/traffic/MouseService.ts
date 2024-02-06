@@ -20,16 +20,19 @@ export class MouseService implements MouseServiceInterface {
   mousePathHistory: MousePath[] = [];
 
   public addMouseTracker(
-    callback: (x: number, y: number, coords: MousePath) => void
+    callback: (x: number, y: number, coords: MousePath) => void,
+    container?: HTMLElement
   ): void {
+    const rect = container?.getBoundingClientRect();
     document.addEventListener("mousemove", (event) => {
-      const x = event.x;
-      const y = event.y;
+      const { x, y } = event;
+      const adjustedX = x - (rect?.left || 0);
+      const adjustedY = y - (rect?.top || 0);
 
-      const coords: MouseCoords = [x, y];
+      const coords: MouseCoords = [adjustedX, adjustedY];
       this.addMouseHistory(coords);
 
-      callback(x, y, this.mousePath);
+      callback(adjustedX, adjustedY, this.mousePath);
     });
   }
 

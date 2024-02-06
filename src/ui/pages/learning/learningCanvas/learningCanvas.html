@@ -1,29 +1,35 @@
-<div>
-  ${message}
-</div>
+<div>${message}</div>
 
-<canvas ref="canvasRef" ></canvas>
-<button click.trigger="saveCanvas()">Save</button>
-<button click.trigger="restoreCanvas()">Undo</button>
-<button click.trigger="clearCanvas()">Clear</button>
+<style>
+  .canvas-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+  }
+  canvas {
+    position: absolute;
+    border: 1px solid black;
+  }
+</style>
 
 <div>
   <label for="shape">Choose a shape:</label>
 
   <template repeat.for="shape of shapes">
     <label>
+      <!-- prettier-ignore -->
       <input type="radio" id="line" name="shapeOption" value.bind="shape" model.bind="shape" checked.bind="selectedShape" change.trigger="selectedShape=shape">
       ${shape}
-
     </label>
   </template>
 
-  <!-- <input type="radio" id="line" name="shape" value="line" model.bind="'line'" checked.bind="selectedShape" change.trigger="selectedShape='line'">
-  <label for="line">Line</label>
-  <input type="radio" id="circle" name="shape" value="circle" model.bind="'circle'" checked.bind="selectedShape" change.trigger="selectedShape='circle'">
-  <label for="circle">Circle</label>
-  <input type="radio" id="box" name="shape" value="box" model.bind="'box'" checked.bind="selectedShape" change.trigger="selectedShape='box'">
-  <label for="box">Box</label>
-  <input type="radio" id="rectangle" name="shape" value="rectangle" model.bind="'rectangle'" checked.bind="selectedShape" change.trigger="selectedShape='rectangle'">
-  <label for="rectangle">Rectangle</label> -->
+  <button click.trigger="saveCanvas()">Save</button>
+  <button click.trigger="restoreCanvas()">Undo</button>
+  <button click.trigger="clearCanvas()">Clear</button>
 </div>
+
+<section class="canvas-container">
+  <canvas ref="canvasRef"></canvas>
+  <canvas ref="backCanvasRef"></canvas>
+</section>

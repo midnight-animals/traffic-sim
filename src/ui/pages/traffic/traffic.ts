@@ -18,13 +18,14 @@ export class Traffic {
   ) {}
 
   attached(): void {
+    this.canvasRef.height = 100;
     this.mouseService.addMouseTracker((x: number, y: number, mousePath) => {
       if (!this) return;
       this.mouseX = x;
       this.mouseY = y;
       this.mousePath = cloneDeep(mousePath);
-    });
+    }, this.canvasRef);
 
-    this.trafficCanvasRenderer.generateTrafficCanvas(this.canvasRef);
+    this.trafficCanvasRenderer.init(this.canvasRef);
   }
 }
