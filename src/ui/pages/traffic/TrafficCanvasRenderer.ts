@@ -1,8 +1,17 @@
+const debug = true;
 import { Canvas2DShapes } from "../../../library/canvas/Canvas2DShapes";
-import { getCarHeight, getCenterOfCarInLane } from "./carModules/carHelpers";
+import { CarBehavior } from "./carModules/CarBehavior";
+import { CarService } from "./carModules/CarService";
+import { CAR_GAP, CAR_WIDTH, getCarHeight } from "./carModules/carHelpers";
 import { ICar } from "./carModules/carTypes";
+import {
+  numOfLanes,
+  getLaneRect,
+  roadSetup,
+  getCenterOfCarInLane
+} from "./roadModules/roadhelpers";
+import { RoadConfig } from "./trafficTypes";
 
-const debug = false;
 const debugFlags = {
   showAxis: true,
   carCoords: true
@@ -11,27 +20,19 @@ const debugFlags = {
 let lastDrawTime = 0; // When the last frame was drawn
 // const fps = 1;
 const fps = debug ? 0.00001 : 30;
-const CAR_GAP = 30;
-const CAR_WIDTH = 50;
 
-const roadSetup: RoadSetup = {
-  lanes: [
-    {
-      cars: 1
-    },
-    {
-      cars: 0
-    }
-  ]
-};
-const numOfLanes = roadSetup.lanes.length;
-
-interface Lane {
-  cars?: number;
-}
-
-interface RoadSetup {
-  lanes: Lane[];
+/**
+ * If enough time has elapsed, draw the next frame
+ */
+function getCanRender(): boolean {
+  const now = Date.now();
+  const elapsed = now - lastDrawTime;
+  let can = false;
+  if (elapsed > 1000 / fps) {
+    lastDrawTime = now - (elapsed % (1000 / fps));
+    can = true;
+  }
+  return can;
 }
 
 /**
@@ -44,12 +45,14 @@ interface RoadSetup {
 export class TrafficCanvasRenderer {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
-  canvas2DShapes: Canvas2DShapes;
+  private canvas2DShapes: Canvas2DShapes;
+  private carService: CarService;
 
   public init(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.context = this.canvas.getContext("2d");
     this.canvas2DShapes = new Canvas2DShapes(this.context);
+    this.carService = new CarService(this.canvas);
 
     this.generateTrafficCanvas();
     this.drawRoad();
@@ -62,8 +65,8 @@ export class TrafficCanvasRenderer {
 
   private drawRoad(): void {
     const rect = this.canvas.getBoundingClientRect();
-    for (let lane = 1; lane < numOfLanes; lane++) {
-      const laneRect = this.getLaneRect(lane);
+    for (let lane = 0; lane < numOfLanes; lane++) {
+      const laneRect = getLaneRect(this.canvas, lane);
       const laneHeight = laneRect.bottom;
       this.canvas2DShapes.drawLine([0, laneHeight], [rect.width, laneHeight]);
     }
@@ -75,28 +78,6 @@ export class TrafficCanvasRenderer {
         this.canvas2DShapes.drawLine([step, 0], [step, 10]);
         this.context.fillText(step.toString(), step, 20);
       }
-    }
-  }
-
-  private getLaneRect(lane: number): DOMRect {
-    if (lane <= 0) console.warn("[Warn] Lane should be greater than 0");
-
-    const rect = this.canvas.getBoundingClientRect().toJSON();
-    const top = calcLaneBorders(lane - 1);
-    const bottom = calcLaneBorders(lane);
-    const height = bottom - top;
-
-    const laneRect = { ...rect, top, bottom, height };
-    return laneRect;
-
-    /**
-     * ____________________ <-- lane top
-     *
-     *  -   -    -    -   -
-     * ____________________ <-- lane bottom
-     */
-    function calcLaneBorders(lane: number) {
-      return (rect.height / numOfLanes) * lane;
     }
   }
 
@@ -112,60 +93,45 @@ export class TrafficCanvasRenderer {
   private genrateCarsForLaneArray(laneIndex: number, numOfCars: number) {
     const carArray: ICar[] = [];
 
-    const laneRect = this.getLaneRect(laneIndex);
+    const laneRect = getLaneRect(this.canvas, laneIndex);
     const carHeight = getCarHeight(laneRect);
-    const centerOfCar = getCenterOfCarInLane(laneIndex, laneRect);
+    const centerOfCarInLane = getCenterOfCarInLane(laneIndex, laneRect);
 
     for (let index = 0; index < numOfCars; index++) {
       const x = (CAR_WIDTH + CAR_GAP) * index;
       const car: ICar = {
         x: x,
-        y: centerOfCar,
+        y: centerOfCarInLane,
         width: CAR_WIDTH,
         height: carHeight,
-        speed: 3
+        speed: 3,
+        lane: laneIndex,
+        behavior: null
       };
+      car.behavior = new CarBehavior(car);
       carArray.push(car);
     }
     return carArray;
   }
 
-  private getCanRender(): boolean {
-    const now = Date.now();
-    const elapsed = now - lastDrawTime;
-    let can = false;
-    if (elapsed > 1000 / fps) {
-      lastDrawTime = now - (elapsed % (1000 / fps));
-      can = true;
-    }
-    return can;
-  }
-
   private generateTrafficCanvas() {
     const cars: ICar[] = [];
     roadSetup.lanes.forEach((lane, laneIndex) => {
-      const generated = this.genrateCarsForLaneArray(laneIndex + 1, lane.cars);
+      const generated = this.genrateCarsForLaneArray(laneIndex, lane.cars);
       cars.push(...generated);
     });
-
-    // Function to update the position of a car
-    const updateCar = (car) => {
-      car.x += car.speed;
-      if (car.x > this.canvas.width) {
-        car.x = -20; // Reset the car's position to the start when it reaches the end of the canvas
-      }
+    const roadConfig: RoadConfig = {
+      lanes: roadSetup.lanes,
+      cars
     };
 
     // Function to update the animation
     const render = () => {
-      const canRender = this.getCanRender();
-
-      // If enough time has elapsed, draw the next frame
+      const canRender = getCanRender();
       if (canRender) {
         this.clear();
-
         cars.forEach((car) => {
-          updateCar(car);
+          this.carService.move(car, roadConfig);
           this.drawCar(car);
         });
       }

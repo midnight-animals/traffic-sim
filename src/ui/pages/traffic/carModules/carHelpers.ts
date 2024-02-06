@@ -1,12 +1,8 @@
-const CAR_HEIGHT = 20;
-const CAR_HEIGHT_FACTOR = 0.3;
-
-export function getCenterOfCarInLane(laneIndex: number, laneRect: DOMRect) {
-  const carHeight = getCarHeight(laneRect);
-  return (
-    laneRect.height / 2 - carHeight / 2 + (laneIndex - 1) * laneRect.height
-  );
-}
+export const CAR_HEIGHT = 20;
+export const CAR_HEIGHT_FACTOR = 0.3;
+export const CAR_GAP = 30;
+export const CAR_WIDTH = 50;
+export const CHANGE_LANE_SPEED = 3;
 
 export function getCarHeight(laneRect: DOMRect) {
   return CAR_HEIGHT || laneRect.height * CAR_HEIGHT_FACTOR;
