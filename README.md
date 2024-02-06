@@ -1,4 +1,4 @@
-# scifi-ui
+# traffic-sim
 
 This project is bootstrapped by [aurelia/new](https://github.com/aurelia/new).
 
