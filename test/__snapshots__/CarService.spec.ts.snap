@@ -1,0 +1,204 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CarService canChangeLanes Can change lane No cars nearby ISSUE-3AFEokbB 1`] = `
+{
+  "car": {
+    "behavior": {},
+    "height": 20,
+    "id": "2",
+    "lane": 0,
+    "speed": 0,
+    "width": 50,
+    "x": 80,
+    "y": 15.5,
+  },
+  "cars": [
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "1",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 15.5,
+    },
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "2",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 80,
+      "y": 15.5,
+    },
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "3",
+      "lane": 1,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 66.5,
+    },
+  ],
+  "result": true,
+}
+`;
+
+exports[`CarService canChangeLanes Cannot change lane Car nearby in different lane ISSUE-SlsXBH9D 1`] = `
+{
+  "car": {
+    "behavior": {},
+    "height": 20,
+    "id": "3",
+    "lane": 1,
+    "speed": 0,
+    "width": 50,
+    "x": 0,
+    "y": 66.5,
+  },
+  "cars": [
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "1",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 15.5,
+    },
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "2",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 80,
+      "y": 15.5,
+    },
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "3",
+      "lane": 1,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 66.5,
+    },
+  ],
+  "result": false,
+}
+`;
+
+exports[`CarService getNearbyCars Nearby Same position on different lane ISSUE-Dsc2eTtk 1`] = `
+{
+  "car": {
+    "behavior": {},
+    "height": 20,
+    "id": "3",
+    "lane": 1,
+    "speed": 0,
+    "width": 50,
+    "x": 0,
+    "y": 66.5,
+  },
+  "cars": [
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "1",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 15.5,
+    },
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "2",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 80,
+      "y": 15.5,
+    },
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "3",
+      "lane": 1,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 66.5,
+    },
+  ],
+  "result": [
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "1",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 15.5,
+    },
+  ],
+}
+`;
+
+exports[`CarService getNearbyCars Not nearby front in different lane ISSUE-uiNjBIP2 1`] = `
+{
+  "car": {
+    "behavior": {},
+    "height": 20,
+    "id": "2",
+    "lane": 0,
+    "speed": 0,
+    "width": 50,
+    "x": 80,
+    "y": 15.5,
+  },
+  "cars": [
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "1",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 15.5,
+    },
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "2",
+      "lane": 0,
+      "speed": 0,
+      "width": 50,
+      "x": 80,
+      "y": 15.5,
+    },
+    {
+      "behavior": {},
+      "height": 20,
+      "id": "3",
+      "lane": 1,
+      "speed": 0,
+      "width": 50,
+      "x": 0,
+      "y": 66.5,
+    },
+  ],
+  "result": [],
+}
+`;
