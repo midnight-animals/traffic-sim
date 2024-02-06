@@ -1,3 +1,4 @@
 
 - [x] add mouse coodrs display
-- [ ] add mouse movement history
+- [x] add mouse movement history
+- [ ] create fake mouse, that follows the path

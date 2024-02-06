@@ -1,24 +1,22 @@
+import { MouseCoords, MousePath } from "../../../types/mouseTypes";
 import "./traffic.scss";
 import { throttle } from "lodash-es";
 
 const throttleTime = 800;
 
-type MouseCords = [x: number, y: number];
-type MousePath = MouseCords[];
-
 abstract class MouseServiceInterface {
-  abstract mousePath: MouseCords[];
+  abstract mousePath: MouseCoords[];
   abstract mousePathHistory: MousePath[];
 
   public abstract addMouseTracker(
     callback: (x: number, y: number) => void
   ): void;
 
-  public abstract addMouseHistory(coords: MouseCords): void;
+  public abstract addMouseHistory(coords: MouseCoords): void;
 }
 
 export class MouseService implements MouseServiceInterface {
-  mousePath: MouseCords[] = [];
+  mousePath: MouseCoords[] = [];
   mousePathHistory: MousePath[] = [];
 
   public addMouseTracker(
@@ -28,7 +26,7 @@ export class MouseService implements MouseServiceInterface {
       const x = event.x;
       const y = event.y;
 
-      const coords: MouseCords = [x, y];
+      const coords: MouseCoords = [x, y];
       this.addMouseHistory(coords);
 
       callback(x, y, this.mousePath);
