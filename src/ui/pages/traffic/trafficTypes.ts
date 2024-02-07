@@ -2,6 +2,7 @@ import { ICar } from "./carModules/carTypes";
 
 export interface Lane {
   cars?: number;
+  obstacles?: number;
 }
 
 export interface RoadSetup {

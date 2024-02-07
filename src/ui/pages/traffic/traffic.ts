@@ -2,7 +2,7 @@ import { inject } from "aurelia";
 
 import "./traffic.scss";
 import { MouseService } from "./MouseService";
-import { cloneDeep } from "lodash-es";
+import { cloneDeep } from "lodash";
 import { TrafficCanvasRenderer } from "./TrafficCanvasRenderer";
 
 @inject()
@@ -19,6 +19,7 @@ export class Traffic {
 
   attached(): void {
     this.canvasRef.height = 100;
+    this.canvasRef.width = 1000;
     this.mouseService.addMouseTracker((x: number, y: number, mousePath) => {
       if (!this) return;
       this.mouseX = x;

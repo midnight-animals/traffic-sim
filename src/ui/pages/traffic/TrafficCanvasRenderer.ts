@@ -1,5 +1,5 @@
 const debug = false;
-import { uniqueId } from "lodash-es";
+import { uniqueId } from "lodash";
 import { Canvas2DShapes } from "../../../library/canvas/Canvas2DShapes";
 import { CarBehavior } from "./carModules/CarBehavior";
 import { CarService } from "./carModules/CarService";
@@ -9,7 +9,7 @@ import {
   CAR_WIDTH,
   getCarHeight
 } from "./carModules/carHelpers";
-import { ICar } from "./carModules/carTypes";
+import { ICar, IObstacle } from "./carModules/carTypes";
 import {
   numOfLanes,
   getLaneRect,
@@ -17,6 +17,7 @@ import {
   getCenterOfCarInLane
 } from "./roadModules/roadhelpers";
 import { RoadConfig } from "./trafficTypes";
+import { getRandomValue } from "../../../helpers/getRandomValue";
 
 const debugFlags = {
   showAxis: true,
@@ -53,12 +54,19 @@ export class TrafficCanvasRenderer {
   private context: CanvasRenderingContext2D;
   private canvas2DShapes: Canvas2DShapes;
   private carService: CarService;
+  private obstacles: IObstacle[];
+
+  public setCanvas(canvas: HTMLCanvasElement) {
+    this.canvas = canvas;
+  }
 
   public init(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.context = this.canvas.getContext("2d");
     this.canvas2DShapes = new Canvas2DShapes(this.context);
     this.carService = new CarService(this.canvas);
+    this.obstacles = this.genrateObstaclesForLaneArray(0, 1);
+    /* prettier-ignore */ console.log('>>>> _ >>>> ~ this.obstacles:', this.obstacles);
 
     this.generateTrafficCanvas();
     this.drawRoad();
@@ -67,16 +75,20 @@ export class TrafficCanvasRenderer {
   private clear(): void {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height); // Clear the canvas
     this.drawRoad();
+    this.drawObstacles();
   }
 
   private drawRoad(): void {
     const rect = this.canvas.getBoundingClientRect();
+    // lanes
     for (let lane = 0; lane < numOfLanes; lane++) {
       const laneRect = getLaneRect(this.canvas, lane);
       const laneHeight = laneRect.bottom;
       this.canvas2DShapes.drawLine([0, laneHeight], [rect.width, laneHeight]);
     }
+    // obstacles
 
+    // debugging
     if (debugFlags.showAxis) {
       const steps = 50;
       for (let tick = 0; tick < rect.width / steps; tick += 1) {
@@ -87,7 +99,22 @@ export class TrafficCanvasRenderer {
     }
   }
 
+  private drawObstacles() {
+    this.obstacles.forEach((obstacle) => {
+      this.drawObstacle(obstacle);
+    });
+  }
+
   private drawCar(car: ICar) {
+    this.context.beginPath();
+    this.canvas2DShapes.rect(car.x, car.y, car.width, car.height); // Draw a simple rectangle as a placeholder for the car
+    if (debugFlags.carCoords) {
+      this.context.fillText(car.x.toString(), car.x, car.y);
+    }
+    this.context.fill();
+  }
+
+  private drawObstacle(car: IObstacle) {
     this.context.beginPath();
     this.canvas2DShapes.rect(car.x, car.y, car.width, car.height); // Draw a simple rectangle as a placeholder for the car
     if (debugFlags.carCoords) {
@@ -121,6 +148,36 @@ export class TrafficCanvasRenderer {
     return carArray;
   }
 
+  genrateObstaclesForLaneArray(laneIndex: number, numOfObstacles: number) {
+    const obstacleArray: IObstacle[] = [];
+    const laneRect = getLaneRect(this.canvas, laneIndex);
+    laneRect; /*?*/
+    const obstacleHeight = getCarHeight(laneRect);
+    const centerOfCarInLane = getCenterOfCarInLane(laneIndex, laneRect);
+    let previousObstacleX = 0;
+
+    for (let index = 0; index < numOfObstacles; index++) {
+      const obstacleWidth = getRandomValue(10, laneRect.width / 5);
+      obstacleWidth; /*?*/
+      const gap = getRandomValue(10, laneRect.width / 5);
+      gap; /*?*/
+      previousObstacleX += gap;
+      previousObstacleX; /*?*/
+
+      const obstacle: IObstacle = {
+        id: uniqueId(),
+        x: previousObstacleX,
+        y: centerOfCarInLane,
+        width: obstacleWidth,
+        height: obstacleHeight,
+        lane: laneIndex
+      };
+      obstacleArray.push(obstacle);
+      previousObstacleX; /*?*/
+      previousObstacleX += obstacleWidth;
+    }
+    return obstacleArray;
+  }
   private generateTrafficCanvas() {
     const cars: ICar[] = [];
     roadSetup.lanes.forEach((lane, laneIndex) => {

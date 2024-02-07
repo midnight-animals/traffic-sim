@@ -1,6 +1,6 @@
 import { MouseCoords, MousePath } from "../../../types/mouseTypes";
 import "./traffic.scss";
-import { throttle } from "lodash-es";
+import { throttle } from "lodash";
 
 const throttleTime = 800;
 

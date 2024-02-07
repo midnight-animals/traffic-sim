@@ -1,15 +1,5 @@
 import { CarService } from "../src/ui/pages/traffic/carModules/CarService";
-
-function mockWindow() {
-  // @ts-expect-error mock window
-  global.window = global;
-  // @ts-expect-error mock document
-  global.document = {
-    createElement: jest.fn().mockReturnValue({
-      getContext: jest.fn()
-    })
-  };
-}
+import { mockWindow } from "./testHelpers/mockWindow";
 
 /**
  * _________________________

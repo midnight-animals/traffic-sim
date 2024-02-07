@@ -4,7 +4,8 @@ import { RoadSetup } from "../trafficTypes";
 export const roadSetup: RoadSetup = {
   lanes: [
     {
-      cars: 3
+      cars: 0,
+      obstacles: 3
     },
     {
       cars: 1
@@ -14,7 +15,7 @@ export const roadSetup: RoadSetup = {
 export const numOfLanes = roadSetup.lanes.length;
 
 export function getLaneRect(canvas: HTMLCanvasElement, lane: number): DOMRect {
-  if (lane <= 0) console.warn("[Warn] Lane should be greater than 0");
+  if (lane < 0) console.warn("[Warn] Lane should be greater or equal than 0");
 
   const rect = canvas.getBoundingClientRect().toJSON();
   const top = calcLaneBorders(lane);
