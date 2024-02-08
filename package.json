@@ -10,7 +10,8 @@
   "dependencies": {
     "@aurelia/router": "latest",
     "aurelia": "latest",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "pixi.js": "^7.4.0"
   },
   "devDependencies": {
     "@aurelia/testing": "latest",
