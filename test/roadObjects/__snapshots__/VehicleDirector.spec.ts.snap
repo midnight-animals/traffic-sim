@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VehicleDirector VehicleDirector Car 1`] = `
+Vehicle {
+  "rect": Rectangle {
+    "height": 100,
+    "type": 1,
+    "width": 200,
+    "x": 0,
+    "y": 0,
+  },
+  "speed": 0,
+  "type": "car",
+}
+`;
+
+exports[`VehicleDirector VehicleDirector Car 2`] = `
+Vehicle {
+  "rect": Rectangle {
+    "height": 100,
+    "type": 1,
+    "width": 200,
+    "x": 0,
+    "y": 0,
+  },
+  "speed": 0,
+  "type": "car",
+}
+`;
+
+exports[`VehicleDirector VehicleDirector Car with behavior ISSUE-xBqg8BnF 1`] = `
+Vehicle {
+  "behavior": CarBehavior {},
+  "rect": Rectangle {
+    "height": 100,
+    "type": 1,
+    "width": 200,
+    "x": 0,
+    "y": 0,
+  },
+  "speed": 0,
+  "type": "car",
+}
+`;

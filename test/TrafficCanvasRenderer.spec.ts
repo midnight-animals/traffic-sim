@@ -12,7 +12,7 @@ describe("TrafficCanvasRenderer", () => {
   });
 
   describe("genrateObstaclesForLaneArray", () => {
-    test.only("1 ISSUE-kyj7MfSS", () => {
+    test("1 ISSUE-kyj7MfSS", () => {
       const result = trafficCanvasRenderer.genrateObstaclesForLaneArray(0, 2);
       result; /*?*/
       // // expect(result).toMatchSnapshot()

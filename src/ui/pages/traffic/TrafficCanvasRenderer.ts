@@ -1,7 +1,7 @@
 const debug = false;
 import { uniqueId } from "lodash";
 import { Canvas2DShapes } from "../../../library/canvas/Canvas2DShapes";
-import { CarBehavior } from "./carModules/CarBehavior";
+import { VehicleBehavior } from "./carModules/VehicleBehavior";
 import { CarService } from "./carModules/CarService";
 import {
   CAR_ACCELERATION,
@@ -10,15 +10,17 @@ import {
   getCarHeight
 } from "./carModules/carHelpers";
 import { ICar, IObstacle } from "./carModules/carTypes";
-import {
-  numOfLanes,
-  getLaneRect,
-  roadSetup,
-  getCenterOfCarInLane
-} from "./roadModules/roadhelpers";
 import { RoadConfig } from "./trafficTypes";
 import { getRandomValue } from "../../../helpers/getRandomValue";
 import { getCanRender } from "../../../helpers/getCanRender";
+import {
+  getLaneRect,
+  getCenterOfCarInLane
+} from "../learning/learningPixi/roadModules/roadhelpers";
+import {
+  numOfLanes,
+  roadSetup
+} from "../learning/learningPixi/roadObjectModules/roadSetup";
 
 const debugFlags = {
   showAxis: true,
@@ -125,7 +127,7 @@ export class TrafficCanvasRenderer {
         lane: laneIndex,
         behavior: null
       };
-      car.behavior = new CarBehavior();
+      car.behavior = new VehicleBehavior();
       carArray.push(car);
     }
     return carArray;

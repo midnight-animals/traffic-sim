@@ -66,7 +66,7 @@ describe("CarService", () => {
 
   describe("canChangeLanes", () => {
     describe("Can change lane", () => {
-      test.only("No cars nearby ISSUE-3AFEokbB", () => {
+      test("No cars nearby ISSUE-3AFEokbB", () => {
         const car_1_1 = cars_2lanes_2_1[1];
         const result = carService.canChangeLanes(car_1_1, 1, cars_2lanes_2_1);
         const snapshot = {

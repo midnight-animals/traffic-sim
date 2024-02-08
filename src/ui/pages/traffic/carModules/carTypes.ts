@@ -1,4 +1,4 @@
-import { CarBehavior } from "./CarBehavior";
+import { VehicleBehavior } from "./VehicleBehavior";
 
 export interface ICar extends Partial<DOMRect> {
   id: string;
@@ -8,7 +8,7 @@ export interface ICar extends Partial<DOMRect> {
    * Which lane to change to, else `null`
    */
   wantToChangeLane?: number;
-  behavior: CarBehavior;
+  behavior: VehicleBehavior;
 }
 
 export interface IObstacle extends Partial<DOMRect> {

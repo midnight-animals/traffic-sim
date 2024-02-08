@@ -1,18 +1,5 @@
-import { getCarHeight } from "../carModules/carHelpers";
-import { RoadSetup } from "../trafficTypes";
-
-export const roadSetup: RoadSetup = {
-  lanes: [
-    {
-      cars: 0,
-      obstacles: 3
-    },
-    {
-      cars: 1
-    }
-  ]
-};
-export const numOfLanes = roadSetup.lanes.length;
+import { getCarHeight } from "../../../traffic/carModules/carHelpers";
+import { numOfLanes } from "../roadObjectModules/roadSetup";
 
 export function getLaneRect(canvas: HTMLCanvasElement, lane: number): DOMRect {
   if (lane < 0) console.warn("[Warn] Lane should be greater or equal than 0");

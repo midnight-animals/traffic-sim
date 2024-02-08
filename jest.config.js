@@ -2,5 +2,5 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  setupFiles: ["jsdom-worker"]
+  setupFiles: ["jsdom-worker", "./test/testHelpers/mockWindow"]
 };

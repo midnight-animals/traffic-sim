@@ -8,7 +8,7 @@ import { ICar } from "./carTypes";
  *     - if car in front is moving too slowly
  *     - (if needs to turn)
  */
-export class CarBehavior {
+export class VehicleBehavior {
   public isAccelerating: boolean;
   public isChangingLanes: boolean;
   public isParking: boolean;

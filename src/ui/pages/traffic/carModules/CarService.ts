@@ -1,4 +1,7 @@
-import { getCenterOfCarInLane, getLaneRect } from "../roadModules/roadhelpers";
+import {
+  getCenterOfCarInLane,
+  getLaneRect
+} from "../../learning/learningPixi/roadModules/roadhelpers";
 import { RoadConfig } from "../trafficTypes";
 import { CHANGE_LANE_SPEED, NEARBY_VALUE } from "./carHelpers";
 import { ICar } from "./carTypes";
