@@ -18,29 +18,12 @@ import {
 } from "./roadModules/roadhelpers";
 import { RoadConfig } from "./trafficTypes";
 import { getRandomValue } from "../../../helpers/getRandomValue";
+import { getCanRender } from "../../../helpers/getCanRender";
 
 const debugFlags = {
   showAxis: true,
   carCoords: true
 };
-
-let lastDrawTime = 0; // When the last frame was drawn
-// const fps = 1;
-const fps = debug ? 0.00001 : 30;
-
-/**
- * If enough time has elapsed, draw the next frame
- */
-function getCanRender(): boolean {
-  const now = Date.now();
-  const elapsed = now - lastDrawTime;
-  let can = false;
-  if (elapsed > 1000 / fps) {
-    lastDrawTime = now - (elapsed % (1000 / fps));
-    can = true;
-  }
-  return can;
-}
 
 /**
  * ____________________ <-- lane top
